@@ -45,6 +45,9 @@
             height: 25px;
             padding: 0;
             margin: 0;
+            @-moz-document url-prefix(){
+                display:block;
+            }
 
             &.item-select:after {
                 right: 5px;
