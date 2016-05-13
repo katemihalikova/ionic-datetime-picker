@@ -1,6 +1,6 @@
 {
   "name": "gdj-ion-datetime-picker",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Date and/or time picker for awesome ionic framework",
   "main": [
     "release/ion-datetime-picker.js",
