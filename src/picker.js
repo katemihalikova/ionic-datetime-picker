@@ -27,8 +27,6 @@ angular.module("ion-datetime-picker", ["ionic"])
                 $scope.minuteInterval = $scope.minuteInterval || 1;
                 $scope.secondInterval = $scope.secondInterval || 1;
 
-                console.log($scope.minuteInterval);
-
                 $scope.showPopup = function () {
                     $ionicPopup.show({
                         templateUrl: "picker-popup.html",
@@ -109,7 +107,6 @@ angular.module("ion-datetime-picker", ["ionic"])
                 };
 
                 $scope.changeBy = function (value, unit) {
-                    console.log("change "+unit+" by "+value);
                     if (+value) {
                         // DST workaround
                         if ((unit === "hour" || unit === "minute") && value === -1) {
