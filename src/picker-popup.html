@@ -35,7 +35,7 @@
         <div class="col"></div>
         <div class="col-20"><button class="button button-positive button-clear icon ion-chevron-up" ng-click="changeBy(+1, 'hour')"></button></div>
         <div class="col"></div>
-        <div class="col-20"><button class="button button-positive button-clear icon ion-chevron-up" ng-click="changeBy(+1, 'minute')"></button></div>
+        <div class="col-20"><button class="button button-positive button-clear icon ion-chevron-up" ng-click="changeBy(+minuteInterval, 'minute')"></button></div>
         <div ng-if-start="secondsEnabled" class="col"></div>
         <div ng-if-end class="col-20"><button class="button button-positive button-clear icon ion-chevron-up" ng-click="changeBy(+1, 'second')"></button></div>
         <div ng-if-start="meridiemEnabled" class="col"></div>
@@ -81,7 +81,7 @@
         <div class="col"></div>
         <div class="col-20"><button class="button button-positive button-clear icon ion-chevron-down" ng-click="changeBy(-1, 'hour')"></button></div>
         <div class="col"></div>
-        <div class="col-20"><button class="button button-positive button-clear icon ion-chevron-down" ng-click="changeBy(-1, 'minute')"></button></div>
+        <div class="col-20"><button class="button button-positive button-clear icon ion-chevron-down" ng-click="changeBy(-minuteInterval, 'minute')"></button></div>
         <div ng-if-start="secondsEnabled" class="col"></div>
         <div ng-if-end class="col-20"><button class="button button-positive button-clear icon ion-chevron-down" ng-click="changeBy(-1, 'second')"></button></div>
         <div ng-if-start="meridiemEnabled" class="col"></div>
