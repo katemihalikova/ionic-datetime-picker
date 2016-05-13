@@ -9,7 +9,10 @@ angular.module("ion-datetime-picker", ["ionic"])
                 subTitle: "=",
                 buttonOk: "=",
                 buttonCancel: "=",
-                minuteInterval: "="
+                monthInterval: "=",
+                hourInterval: "=",
+                minuteInterval: "=",
+                secondInterval: "="
             },
             controller: function ($scope, $ionicPopup, $ionicPickerI18n, $timeout) {
                 $scope.i18n = $ionicPickerI18n;
@@ -18,6 +21,11 @@ angular.module("ion-datetime-picker", ["ionic"])
                 $scope.rows = [0, 1, 2, 3, 4, 5];
                 $scope.cols = [1, 2, 3, 4, 5, 6, 7];
                 $scope.weekdays = [0, 1, 2, 3, 4, 5, 6];
+
+                $scope.monthInterval = $scope.monthInterval || 1;
+                $scope.hourInterval = $scope.hourInterval || 1;
+                $scope.minuteInterval = $scope.minuteInterval || 1;
+                $scope.secondInterval = $scope.secondInterval || 1;
 
                 console.log($scope.minuteInterval);
 
