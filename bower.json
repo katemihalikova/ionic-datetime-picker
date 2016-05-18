@@ -1,8 +1,8 @@
 {
-    "name": "ion-datetime-picker",
-    "version": "0.1.3",
+    "name": "gdj-ion-datetime-picker",
+    "version": "0.1.9",
     "authors": [
-        "Kate Miháliková <kate@katemihalikova.cz>"
+        "Glenn Deajeger <glenn_dejaeger@yahoo.com>"
     ],
     "description": "Date and/or time picker for awesome ionic framework",
     "main": [
@@ -19,7 +19,7 @@
         "phonegap"
     ],
     "license": "MIT",
-    "homepage": "https://github.com/katemihalikova/ionic-datetime-picker",
+    "homepage": "https://github.com/glenndejaeger/ionic-datetime-picker",
     "ignore": [
         "**/.*",
         "node_modules"

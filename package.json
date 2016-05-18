@@ -1,13 +1,13 @@
 {
-  "name": "ion-datetime-picker",
-  "version": "0.1.3",
+  "name": "gdj-ion-datetime-picker",
+  "version": "0.1.9",
   "description": "Date and/or time picker for awesome ionic framework",
   "main": [
     "release/ion-datetime-picker.js",
     "release/ion-datetime-picker.css"
   ],
   "scripts": {},
-  "author": "https://github.com/katemihalikova, kate@katemihalikova.cz",
+  "author": "https://github.com/glenndejaeger, glenn_dejaeger@yahoo.com",
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
