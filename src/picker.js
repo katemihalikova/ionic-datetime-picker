@@ -12,9 +12,13 @@ angular.module("ion-datetime-picker", ["ionic"])
                 monthStep: "=?",
                 hourStep: "=?",
                 minuteStep: "=?",
-                secondStep: "=?"
+                secondStep: "=?",
+                pastDate: "=?" //Past Date Attribute values[true/false]
             },
             controller: function($scope, $ionicPopup, $ionicPickerI18n, $timeout) {
+                
+                $scope.pastDate = true; //Setting Default value to true, i.e, show past values
+                
                 $scope.i18n = $ionicPickerI18n;
                 $scope.bind = {};
 
@@ -136,9 +140,26 @@ angular.module("ion-datetime-picker", ["ionic"])
                         changeViewData();
                     }
                 };
-                $scope.changeDay = function(day) {
-                    $scope.day = day;
-                    changeViewData();
+                //Function to check selected date is lesser then today
+                $scope.checkPastDay = function (day) {
+                    if ($scope.backDate == false) {
+                        console.log(day);
+                        var today = new Date();
+                        if ($scope.year >= today.getFullYear() &&
+                            $scope.month >= today.getMonth() &&
+                            day >= today.getDate()) {
+                            return false;
+                        } return true;
+                    }else{
+                        return false;
+                    }
+                }
+                $scope.changeDay = function (day) {
+                    //Condition to check past day
+                    if (!$scope.checkPastDay(day)) {
+                        $scope.day = day;
+                        changeViewData();
+                    }
                 };
                 $scope.changed = function() {
                     changeViewData();

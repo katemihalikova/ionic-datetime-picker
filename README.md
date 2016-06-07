@@ -99,6 +99,10 @@ _HINT: Use `data-title` instead of `title` if you are going to use the app in th
 
 Configure the text of buttons at the bottom of the picker.
 
+### `past-date` attributes
+
+By default its value is `true`, i.e, past dates are selectable. Set this attribute `false` to  restrict past dates.
+
 ## Internationalization factory
 
 Simple internationalization option. Inject the `$ionicPickerI18n` factory into your code and set the localized strings.
