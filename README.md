@@ -99,6 +99,19 @@ _HINT: Use `data-title` instead of `title` if you are going to use the app in th
 
 Configure the text of buttons at the bottom of the picker.
 
+### `only-valid` attribute
+
+Disable/Enable calendar days according to type and date range specified.
+
+E.g. 
+```
+only-valid="{'after': '2016-04-09' }"
+only-valid="{'after': 'today', 'inclusive': true }"
+only-valid="{'outside': {'initial': '2016-04-09', 'final': '2016-06-15'}, 'inclusive': true }"
+```
+
+Types supported: 'after', 'before', 'between' and 'outside'. If you want to include the day specified, set 'inclusive' property as 'true'.
+
 ## Internationalization factory
 
 Simple internationalization option. Inject the `$ionicPickerI18n` factory into your code and set the localized strings.
