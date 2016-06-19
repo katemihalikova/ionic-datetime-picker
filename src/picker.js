@@ -12,7 +12,8 @@ angular.module("ion-datetime-picker", ["ionic"])
                 monthStep: "=?",
                 hourStep: "=?",
                 minuteStep: "=?",
-                secondStep: "=?"
+                secondStep: "=?",
+                onlyValid: "=?"
             },
             controller: function($scope, $ionicPopup, $ionicPickerI18n, $timeout) {
                 $scope.i18n = $ionicPickerI18n;
@@ -137,8 +138,79 @@ angular.module("ion-datetime-picker", ["ionic"])
                     }
                 };
                 $scope.changeDay = function(day) {
+                    if (!$scope.isEnabled(day)) {
+                        return;
+                    }
                     $scope.day = day;
                     changeViewData();
+                };
+
+                function createDate(stringDate){
+                    var date = new Date(stringDate);
+                    var isInvalidDate = isNaN(date.getTime());
+                    if (isInvalidDate) {
+                        date = new Date();//today
+                        date.setHours(0, 0, 0, 0, 0);
+                    }
+                    return date;
+                }
+
+                $scope.isEnabled = function(day) {
+                    if (!$scope.onlyValid) {
+                        return true;
+                    }
+
+                    var currentDate = new Date($scope.year, $scope.month, day);
+
+                    if ($scope.onlyValid.after) {
+
+                        var afterDate = createDate($scope.onlyValid.after);
+
+                        if ($scope.onlyValid.inclusive) {
+                            return currentDate >= afterDate;
+                        } else {
+                            return currentDate > afterDate;
+                        }
+
+                    } else
+                    if ($scope.onlyValid.before){
+
+                        var beforeDate = createDate($scope.onlyValid.after);
+
+                        if ($scope.onlyValid.inclusive) {
+                            return currentDate <= beforeDate;
+                        } else {
+                            return currentDate < beforeDate;
+                        }
+
+                    } else
+                    if ($scope.onlyValid.between){
+
+                        var initialDate = createDate($scope.onlyValid.between.initial);
+                        var finalDate = createDate($scope.onlyValid.between.final);
+
+                        if ($scope.onlyValid.inclusive) {
+                            return currentDate >= initialDate && currentDate <= finalDate;
+                        } else {
+                            return currentDate > initialDate && currentDate < finalDate;
+                        }
+
+                    } else
+                    if ($scope.onlyValid.outside){
+
+                        var initialDate = createDate($scope.onlyValid.outside.initial);
+                        var finalDate = createDate($scope.onlyValid.outside.final);
+
+                        if ($scope.onlyValid.inclusive) {
+                            return currentDate <= initialDate || currentDate >= finalDate;
+                        } else {
+                            return currentDate < initialDate || currentDate > finalDate;
+                        }
+
+                    } else {
+                        return true;
+                    }
+
                 };
                 $scope.changed = function() {
                     changeViewData();
