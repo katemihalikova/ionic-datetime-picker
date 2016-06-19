@@ -27,7 +27,11 @@
     </div>
     <div ng-if-end class="row calendar days" ng-repeat="y in rows">
         <div class="col" ng-repeat="x in cols">
-            <div ng-show="(cellDay = y * 7 + x - firstDay) > 0 && cellDay <= daysInMonth" ng-click="changeDay(cellDay)" class="day" ng-class="{'selected': cellDay === day, 'today': cellDay === today.day && month === today.month && year === today.year}">{{cellDay}}</div>
+            <div ng-show="(cellDay = y * 7 + x - firstDay) > 0 && cellDay <= daysInMonth"
+                 ng-click="changeDay(cellDay)" class="day"
+                 ng-class="{ 'disabled': !isEnabled(cellDay), 'selected': cellDay === day, 'today': cellDay === today.day && month === today.month && year === today.year }">
+                {{cellDay}}
+            </div>
         </div>
     </div>
 
