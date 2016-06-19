@@ -22,6 +22,9 @@
                 background-color: #387ef5;
                 color: white;
             }
+            &.disabled, &.disabled:hover, &.disabled.activated {
+                background-color: #ccc;
+            }
         }
         .weekday {
             font-weight: bold;
