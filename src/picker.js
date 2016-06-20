@@ -23,6 +23,21 @@ angular.module("ion-datetime-picker", ["ionic"])
                 $scope.cols = [1, 2, 3, 4, 5, 6, 7];
                 $scope.weekdays = [0, 1, 2, 3, 4, 5, 6];
 
+                var lastDateSet = {
+                    year: $scope.year,
+                    month: $scope.month,
+                    day: $scope.day,
+                    hour: $scope.hour,
+                    minute: $scope.minute,
+                    second: $scope.second,
+                    date: new Date(),
+                    getDateWithoutTime: function(){
+                        var tempDate = new Date(this.date);
+                        tempDate.setHours(0, 0, 0, 0, 0);
+                        return tempDate;
+                    }
+                };
+
                 $scope.showPopup = function() {
                     $ionicPopup.show({
                         templateUrl: "lib/ion-datetime-picker/src/picker-popup.html",
@@ -68,7 +83,38 @@ angular.module("ion-datetime-picker", ["ionic"])
                     changeViewData();
                 };
 
+                function setNextValidDate(date, dayToAdd){
+                    dayToAdd = dayToAdd || 0;
+                    if (dayToAdd !== 0) {
+                        date.setDate(date.getDate() + dayToAdd);
+                    }
+
+                    lastDateSet.year = date.getFullYear();
+                    lastDateSet.month = date.getMonth();
+                    lastDateSet.day = date.getDate();
+                    lastDateSet.hour = date.getHours();
+                    lastDateSet.minute = date.getMinutes();
+                    lastDateSet.second = date.getSeconds();
+                    lastDateSet.date = date;
+
+                }
+
+                function setLastValidDate(){
+                    var date = new Date($scope.year, $scope.month, $scope.day, $scope.hour, $scope.minute, $scope.second);
+                    if ($scope.isEnabled(date.getDate(), true)) {
+                        setNextValidDate(date);
+                    } else {
+                        $scope.year = lastDateSet.year;
+                        $scope.month = lastDateSet.month;
+                        $scope.day = lastDateSet.day;
+                        $scope.hour = lastDateSet.hour;
+                        $scope.minute = lastDateSet.minute;
+                        $scope.second = lastDateSet.second;
+                    }
+                }
+
                 var changeViewData = function() {
+                    setLastValidDate();
                     var date = new Date($scope.year, $scope.month, $scope.day, $scope.hour, $scope.minute, $scope.second);
 
                     if ($scope.dateEnabled) {
@@ -138,9 +184,6 @@ angular.module("ion-datetime-picker", ["ionic"])
                     }
                 };
                 $scope.changeDay = function(day) {
-                    if (!$scope.isEnabled(day)) {
-                        return;
-                    }
                     $scope.day = day;
                     changeViewData();
                 };
@@ -150,26 +193,29 @@ angular.module("ion-datetime-picker", ["ionic"])
                     var isInvalidDate = isNaN(date.getTime());
                     if (isInvalidDate) {
                         date = new Date();//today
-                        date.setHours(0, 0, 0, 0, 0);
                     }
+                    date.setHours(0, 0, 0, 0, 0);
                     return date;
                 }
 
-                $scope.isEnabled = function(day) {
+                $scope.isEnabled = function(day, computeNextValidDate) {
                     if (!$scope.onlyValid) {
                         return true;
                     }
 
                     var currentDate = new Date($scope.year, $scope.month, day);
+                    var isValid = true;
 
                     if ($scope.onlyValid.after) {
 
                         var afterDate = createDate($scope.onlyValid.after);
 
                         if ($scope.onlyValid.inclusive) {
-                            return currentDate >= afterDate;
+                            isValid = currentDate >= afterDate;
+                            if (!isValid && computeNextValidDate) setNextValidDate(afterDate, 0);
                         } else {
-                            return currentDate > afterDate;
+                            isValid = currentDate > afterDate;
+                            if (!isValid && computeNextValidDate) setNextValidDate(afterDate, 1);
                         }
 
                     } else
@@ -178,9 +224,11 @@ angular.module("ion-datetime-picker", ["ionic"])
                         var beforeDate = createDate($scope.onlyValid.after);
 
                         if ($scope.onlyValid.inclusive) {
-                            return currentDate <= beforeDate;
+                            isValid = currentDate <= beforeDate;
+                            if (!isValid && computeNextValidDate) setNextValidDate(beforeDate, 0);
                         } else {
-                            return currentDate < beforeDate;
+                            isValid = currentDate < beforeDate;
+                            if (!isValid && computeNextValidDate) setNextValidDate(beforeDate, -1);
                         }
 
                     } else
@@ -190,9 +238,17 @@ angular.module("ion-datetime-picker", ["ionic"])
                         var finalDate = createDate($scope.onlyValid.between.final);
 
                         if ($scope.onlyValid.inclusive) {
-                            return currentDate >= initialDate && currentDate <= finalDate;
+                            isValid = currentDate >= initialDate && currentDate <= finalDate;
+                            if (!isValid && computeNextValidDate) {
+                                if (currentDate < initialDate) setNextValidDate(initialDate, 0);
+                                if (currentDate > finalDate) setNextValidDate(finalDate, 0);
+                            }
                         } else {
-                            return currentDate > initialDate && currentDate < finalDate;
+                            isValid = currentDate > initialDate && currentDate < finalDate;
+                            if (!isValid && computeNextValidDate) {
+                                if (currentDate <= initialDate) setNextValidDate(initialDate, 1);
+                                if (currentDate >= finalDate) setNextValidDate(finalDate, -1);
+                            }
                         }
 
                     } else
@@ -202,14 +258,23 @@ angular.module("ion-datetime-picker", ["ionic"])
                         var finalDate = createDate($scope.onlyValid.outside.final);
 
                         if ($scope.onlyValid.inclusive) {
-                            return currentDate <= initialDate || currentDate >= finalDate;
+                            isValid = currentDate <= initialDate || currentDate >= finalDate;
+                            if (!isValid && computeNextValidDate) {
+                                var lastValidDate = lastDateSet.getDateWithoutTime();
+                                if (lastValidDate <= initialDate) setNextValidDate(finalDate, 0);
+                                if (lastValidDate >= finalDate) setNextValidDate(initialDate, 0);
+                            }
                         } else {
-                            return currentDate < initialDate || currentDate > finalDate;
+                            isValid = currentDate < initialDate || currentDate > finalDate;
+                            if (!isValid && computeNextValidDate) {
+                                var lastValidDate = lastDateSet.getDateWithoutTime();
+                                if (lastValidDate < initialDate) setNextValidDate(finalDate, 1);
+                                if (lastValidDate > finalDate) setNextValidDate(initialDate, -1);
+                            }
                         }
 
-                    } else {
-                        return true;
                     }
+                    return isValid
 
                 };
                 $scope.changed = function() {
