@@ -62,7 +62,7 @@ Put the `ion-datetime-picker` directive alongside the `ng-model` wherever you wa
 ```html
 <ion-list>
     <ion-item ion-datetime-picker ng-model="datetimeValue">
-        {{datetimeValue| date: "yyyy-mm-dd H:mm:ss"}}
+        {{datetimeValue| date: "yyyy-MM-dd H:mm:ss"}}
     </ion-item>
 </ion-list>
 ```
