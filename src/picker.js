@@ -48,13 +48,13 @@ angular.module("ion-datetime-picker", ["ionic"])
                         buttons: [
                             {
                                 text: $scope.buttonOk || $scope.i18n.ok,
-                                type: "button-positive",
+                                type: $scope.i18n.buttonStyle.ok,
                                 onTap: function() {
                                     $scope.commit();
                                 }
                             }, {
                                 text: $scope.buttonCancel || $scope.i18n.cancel,
-                                type: "button-stable",
+                                type: $scope.i18n.buttonStyle.cancel,
                                 onTap: function() {
                                     $timeout(function() {
                                         $scope.processModel();
