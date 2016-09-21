@@ -112,6 +112,10 @@ Configure the text of buttons at the bottom of the picker.
 
 Function called when the date is changed.
 
+### `on-cancel` attribute
+
+Function called when the user cancel the date change.
+
 ### `only-valid` attribute
 
 Disable/Enable calendar days according to type and date range specified.
