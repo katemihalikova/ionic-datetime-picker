@@ -14,7 +14,8 @@ angular.module("ion-datetime-picker", ["ionic"])
                 minuteStep: "=?",
                 secondStep: "=?",
                 onlyValid: "=?",
-                onChange: "=?"
+                onChange: "=?",
+                onCancel: "=?"
             },
             controller: function($scope, $ionicPopup, $ionicPickerI18n, $timeout) {
                 $scope.i18n = $ionicPickerI18n;
@@ -70,6 +71,9 @@ angular.module("ion-datetime-picker", ["ionic"])
                     }).then(function(response){
                         if(response){
                             $scope.onChange(response);
+                        }
+                        else{
+                            $scope.onCancel();
                         }
                     });
                 };
