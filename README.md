@@ -108,6 +108,10 @@ _HINT: Use `data-title` instead of `title` if you are going to use the app in th
 
 Configure the text of buttons at the bottom of the picker.
 
+### `on-change` attribute
+
+Function called when the date is changed.
+
 ### `only-valid` attribute
 
 Disable/Enable calendar days according to type and date range specified.
