@@ -25,7 +25,7 @@ The ion-datetime-picker component has these features:
 - Choose Sunday or Monday as the first day of the week
 - Use 12-hour or 24-hour clock
 - Pick time with or without seconds
-- Configure popup title and button labels
+- Configure popup title, button labels & buttons style
 - Configure i18n to get weekdays and months in your language
 - Configure size of a step
 
@@ -143,6 +143,10 @@ angular.module("myApp")
         $ionicPickerI18n.months = ["Janvier", "Febrero", "März", "四月", "Maio", "Kesäkuu", "Červenec", "अगस्त", "Вересень", "Październik", "Νοέμβριος", "డిసెంబర్"];
         $ionicPickerI18n.ok = "オーケー";
         $ionicPickerI18n.cancel = "Cancelar";
+        $ionicPickerI18n.buttonStyle = {
+            ok : 'button-positive',
+            cancel : "button-stable"
+        };
     });
 ```
 
