@@ -25,7 +25,7 @@ The ion-datetime-picker component has these features:
 - Choose Sunday or Monday as the first day of the week
 - Use 12-hour or 24-hour clock
 - Pick time with or without seconds
-- Configure popup title, button labels & buttons style
+- Configure popup title and button labels and classes
 - Configure i18n to get weekdays and months in your language
 - Configure size of a step
 
@@ -120,9 +120,9 @@ only-valid="{'outside': {'initial': '2016-04-09', 'final': '2016-06-15'}, 'inclu
 
 Types supported: `'after'`, `'before'`, `'between'` and `'outside'`. If you want to include the day specified, set `'inclusive'` property to `true`.
 
-## Internationalization factory
+## Internationalization & customization factory
 
-Simple internationalization option. Inject the `$ionicPickerI18n` factory into your code and set the localized strings.
+Simple internationalization & customization options. Inject the `$ionicPickerI18n` factory into your code and set the localized strings and button classes.
 
 ### `weekdays` key
 
@@ -136,6 +136,10 @@ Array of months names. `0` is January. If `moment` is installed, I try to get lo
 
 Default, global labels of the buttons at the bottom of the picker.
 
+### `okClass` and `cancelClass` keys
+
+Custom space-delimited classes applied to the buttons at the bottom of the picker.
+
 ```js
 angular.module("myApp")
     .run(function($ionicPickerI18n) {
@@ -143,10 +147,8 @@ angular.module("myApp")
         $ionicPickerI18n.months = ["Janvier", "Febrero", "März", "四月", "Maio", "Kesäkuu", "Červenec", "अगस्त", "Вересень", "Październik", "Νοέμβριος", "డిసెంబర్"];
         $ionicPickerI18n.ok = "オーケー";
         $ionicPickerI18n.cancel = "Cancelar";
-        $ionicPickerI18n.buttonStyle = {
-            ok : 'button-positive',
-            cancel : "button-stable"
-        };
+        $ionicPickerI18n.okClass = "button-positive";
+        $ionicPickerI18n.cancelClass = "button-stable";
     });
 ```
 
