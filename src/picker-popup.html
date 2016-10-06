@@ -51,7 +51,7 @@
         <label class="col col-20">
             <div class="item item-input">
                 <div>
-                    <input type="text" ng-model="bind.hour" pattern="0?([01]?[0-9]|2[0-3])" ng-change="change('hour')" ng-blur="changed()" required>
+                    <input type="{{timeFieldType}}" ng-model="bind.hour" pattern="0?([01]?[0-9]|2[0-3])" ng-change="change('hour')" ng-blur="changed()" required>
                 </div>
             </div>
         </label>
@@ -59,7 +59,7 @@
         <label class="col col-20">
             <div class="item item-input">
                 <div>
-                    <input type="text" ng-model="bind.minute" pattern="0?[0-5]?[0-9]" ng-change="change('minute')" ng-blur="changed()" required>
+                    <input type="{{timeFieldType}}" ng-model="bind.minute" pattern="0?[0-5]?[0-9]" ng-change="change('minute')" ng-blur="changed()" required>
                 </div>
             </div>
         </label>
@@ -67,7 +67,7 @@
         <label ng-if-end class="col col-20">
             <div class="item item-input">
                 <div>
-                    <input type="text" ng-model="bind.second" pattern="0?[0-5]?[0-9]" ng-change="change('second')" ng-blur="changed()" required>
+                    <input type="{{timeFieldType}}" ng-model="bind.second" pattern="0?[0-5]?[0-9]" ng-change="change('second')" ng-blur="changed()" required>
                 </div>
             </div>
         </label>

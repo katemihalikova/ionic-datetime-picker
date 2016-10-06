@@ -13,7 +13,8 @@ angular.module("ion-datetime-picker", ["ionic"])
                 hourStep: "=?",
                 minuteStep: "=?",
                 secondStep: "=?",
-                onlyValid: "=?"
+                onlyValid: "=?",
+                telTypeForTimeFields: "=?"
             },
             controller: function($scope, $ionicPopup, $ionicPickerI18n, $timeout) {
                 $scope.i18n = $ionicPickerI18n;
@@ -279,6 +280,10 @@ angular.module("ion-datetime-picker", ["ionic"])
                 };
                 $scope.changed = function() {
                     changeViewData();
+                };
+
+                $scope.timeFieldType = function() {
+                  return $scope.telTypeForTimeFields ? "tel" : "text";
                 };
 
                 if ($scope.dateEnabled) {
