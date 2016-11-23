@@ -13,7 +13,9 @@ angular.module("ion-datetime-picker", ["ionic"])
                 hourStep: "=?",
                 minuteStep: "=?",
                 secondStep: "=?",
-                onlyValid: "=?"
+                onlyValid: "=?",
+                onChange: "=?",
+                onCancel: "=?"
             },
             controller: function($scope, $ionicPopup, $ionicPickerI18n, $timeout) {
                 $scope.i18n = $ionicPickerI18n;
@@ -51,6 +53,8 @@ angular.module("ion-datetime-picker", ["ionic"])
                                 type: $scope.i18n.okClass,
                                 onTap: function() {
                                     $scope.commit();
+
+                                    return $scope.modelDate;
                                 }
                             }, {
                                 text: $scope.buttonCancel || $scope.i18n.cancel,
@@ -59,9 +63,18 @@ angular.module("ion-datetime-picker", ["ionic"])
                                     $timeout(function() {
                                         $scope.processModel();
                                     }, 200);
+
+                                    return false;
                                 }
                             }
                         ]
+                    }).then(function(response){
+                        if(response){
+                            $scope.onChange(response);
+                        }
+                        else{
+                            $scope.onCancel();
+                        }
                     });
                 };
 
