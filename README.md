@@ -87,6 +87,10 @@ Put the `ion-datetime-picker` directive alongside the `ng-model` wherever you wa
 
 Choose which picker type is used. When neither is set, I assume both and use the datetime picker.
 
+### `month-only` attribute
+
+When used with `date` attribute, does not display the calendar.
+
 ### `monday-first` attribute
 
 Set this if you want to have Monday as the first day of a week.
