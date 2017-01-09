@@ -204,76 +204,88 @@ angular.module("ion-datetime-picker", ["ionic"])
           }
 
           var currentDate = new Date($scope.year, $scope.month, day);
+          var constraints = $scope.onlyValid;
+          if (!(constraints instanceof Array)) {
+            constraints = [constraints];
+          }
+          
           var isValid = true;
-
-          if ($scope.onlyValid.after) {
-
-            var afterDate = createDate($scope.onlyValid.after);
-
-            if ($scope.onlyValid.inclusive) {
-              isValid = currentDate >= afterDate;
-              if (!isValid && computeNextValidDate) setNextValidDate(afterDate, 0);
-            } else {
-              isValid = currentDate > afterDate;
-              if (!isValid && computeNextValidDate) setNextValidDate(afterDate, 1);
-            }
-
-          } else
-            if ($scope.onlyValid.before) {
-
-              var beforeDate = createDate($scope.onlyValid.before);
-
-              if ($scope.onlyValid.inclusive) {
+          for (var i = 0; i < constraints.length; i++) {
+            var currentRule = constraints[i];
+            
+            if (currentRule.after) {
+  
+              var afterDate = createDate(currentRule.after);
+              if (currentRule.inclusive) {
+                isValid = currentDate >= afterDate;
+                if (!isValid && computeNextValidDate) setNextValidDate(afterDate, 0);
+              } else {
+                isValid = currentDate > afterDate;
+                if (!isValid && computeNextValidDate) setNextValidDate(afterDate, 1);
+              }
+  
+            } else
+            if (currentRule.before){
+  
+              var beforeDate = createDate(currentRule.after);
+  
+              if (currentRule.inclusive) {
                 isValid = currentDate <= beforeDate;
                 if (!isValid && computeNextValidDate) setNextValidDate(beforeDate, 0);
               } else {
                 isValid = currentDate < beforeDate;
                 if (!isValid && computeNextValidDate) setNextValidDate(beforeDate, -1);
               }
-
+  
             } else
-              if ($scope.onlyValid.between) {
-
-                var initialDate = createDate($scope.onlyValid.between.initial);
-                var finalDate = createDate($scope.onlyValid.between.final);
-
-                if ($scope.onlyValid.inclusive) {
-                  isValid = currentDate >= initialDate && currentDate <= finalDate;
-                  if (!isValid && computeNextValidDate) {
-                    if (currentDate < initialDate) setNextValidDate(initialDate, 0);
-                    if (currentDate > finalDate) setNextValidDate(finalDate, 0);
-                  }
-                } else {
-                  isValid = currentDate > initialDate && currentDate < finalDate;
-                  if (!isValid && computeNextValidDate) {
-                    if (currentDate <= initialDate) setNextValidDate(initialDate, 1);
-                    if (currentDate >= finalDate) setNextValidDate(finalDate, -1);
-                  }
+            if (currentRule.between){
+  
+              var initialDate = createDate(currentRule.between.initial);
+              var finalDate = createDate(currentRule.between.final);
+  
+              if (currentRule.inclusive) {
+                isValid = currentDate >= initialDate && currentDate <= finalDate;
+                if (!isValid && computeNextValidDate) {
+                  if (currentDate < initialDate) setNextValidDate(initialDate, 0);
+                  if (currentDate > finalDate) setNextValidDate(finalDate, 0);
                 }
-
-              } else
-                if ($scope.onlyValid.outside) {
-
-                  var initialDate = createDate($scope.onlyValid.outside.initial);
-                  var finalDate = createDate($scope.onlyValid.outside.final);
-
-                  if ($scope.onlyValid.inclusive) {
-                    isValid = currentDate <= initialDate || currentDate >= finalDate;
-                    if (!isValid && computeNextValidDate) {
-                      var lastValidDate = lastDateSet.getDateWithoutTime();
-                      if (lastValidDate <= initialDate) setNextValidDate(finalDate, 0);
-                      if (lastValidDate >= finalDate) setNextValidDate(initialDate, 0);
-                    }
-                  } else {
-                    isValid = currentDate < initialDate || currentDate > finalDate;
-                    if (!isValid && computeNextValidDate) {
-                      var lastValidDate = lastDateSet.getDateWithoutTime();
-                      if (lastValidDate < initialDate) setNextValidDate(finalDate, 1);
-                      if (lastValidDate > finalDate) setNextValidDate(initialDate, -1);
-                    }
-                  }
-
+              } else {
+                isValid = currentDate > initialDate && currentDate < finalDate;
+                if (!isValid && computeNextValidDate) {
+                  if (currentDate <= initialDate) setNextValidDate(initialDate, 1);
+                  if (currentDate >= finalDate) setNextValidDate(finalDate, -1);
                 }
+              }
+  
+            } else
+            if (currentRule.outside){
+  
+              var initialDate = createDate(currentRule.outside.initial);
+              var finalDate = createDate(currentRule.outside.final);
+  
+              if (currentRule.inclusive) {
+                isValid = currentDate <= initialDate || currentDate >= finalDate;
+                if (!isValid && computeNextValidDate) {
+                  var lastValidDate = lastDateSet.getDateWithoutTime();
+                  if (lastValidDate <= initialDate) setNextValidDate(finalDate, 0);
+                  if (lastValidDate >= finalDate) setNextValidDate(initialDate, 0);
+                }
+              } else {
+                isValid = currentDate < initialDate || currentDate > finalDate;
+                if (!isValid && computeNextValidDate) {
+                  var lastValidDate = lastDateSet.getDateWithoutTime();
+                  if (lastValidDate < initialDate) setNextValidDate(finalDate, 1);
+                  if (lastValidDate > finalDate) setNextValidDate(initialDate, -1);
+                }
+              }
+  
+            }
+
+            if (!isValid) {
+              break;
+            }
+          }
+          
           return isValid
 
         };

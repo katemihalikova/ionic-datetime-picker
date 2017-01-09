@@ -125,6 +125,12 @@ only-valid="{'outside': {'initial': '2016-04-09', 'final': '2016-06-15'}, 'inclu
 
 Types supported: `'after'`, `'before'`, `'between'` and `'outside'`. If you want to include the day specified, set `'inclusive'` property to `true`.
 
+To combine rules, just pass an array and it should do the trick. Rules are complementary (treated with AND, not OR), it means that a date will be available only if it matches all the constraints you pass.
+Example:
+```html
+only-valid="[{'after': '2017-01-12'}, {'outside': {'initial': '2017-01-19', 'final': '2017-01-29'}}, {'outside': {'initial': '2017-02-19', 'final': '2017-02-29'}}]"
+```
+
 ## Internationalization & customization factory
 
 Simple internationalization & customization options. Inject the `$ionicPickerI18n` factory into your code and set the localized strings and button classes.
