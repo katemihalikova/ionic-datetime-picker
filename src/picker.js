@@ -75,7 +75,7 @@ angular.module("ion-datetime-picker", ["ionic"])
           var date = $scope.modelDate instanceof Date ? $scope.modelDate : new Date();
           $scope.year = $scope.dateEnabled ? date.getFullYear() : 0;
           $scope.month = $scope.dateEnabled ? date.getMonth() : 0;
-          $scope.day = $scope.dateEnabled ? date.getDate() : 0;
+          $scope.day = $scope.dateEnabled && !$scope.onlyMonth ? date.getDate() : 0;
           $scope.hour = $scope.timeEnabled ? date.getHours() : 0;
           $scope.minute = $scope.timeEnabled ? date.getMinutes() : 0;
           $scope.second = $scope.secondsEnabled ? date.getSeconds() : 0;
@@ -120,16 +120,18 @@ angular.module("ion-datetime-picker", ["ionic"])
           if ($scope.dateEnabled) {
             $scope.year = date.getFullYear();
             $scope.month = date.getMonth();
-            $scope.day = date.getDate();
 
             $scope.bind.year = $scope.year;
             $scope.bind.month = $scope.month;
 
-            $scope.firstDay = new Date($scope.year, $scope.month, 1).getDay();
-            if ($scope.mondayFirst) {
-              $scope.firstDay = ($scope.firstDay || 7) - 1;
-            }
-            $scope.daysInMonth = getDaysInMonth($scope.year, $scope.month);
+              if(!$scope.onlyMonth) {
+                  $scope.day = date.getDate();
+                  $scope.firstDay = new Date($scope.year, $scope.month, 1).getDay();
+                  if ($scope.mondayFirst) {
+                      $scope.firstDay = ($scope.firstDay || 7) - 1;
+                  }
+                  $scope.daysInMonth = getDaysInMonth($scope.year, $scope.month);
+              }
           }
 
           if ($scope.timeEnabled) {
@@ -315,6 +317,7 @@ angular.module("ion-datetime-picker", ["ionic"])
       },
       link: function($scope, $element, $attrs, ngModelCtrl) {
         $scope.dateEnabled = "date" in $attrs && $attrs.date !== "false";
+        $scope.onlyMonth = "monthOnly" in $attrs && $attrs.monthOnly !== "false";
         $scope.timeEnabled = "time" in $attrs && $attrs.time !== "false";
         if ($scope.dateEnabled === false && $scope.timeEnabled === false) {
           $scope.dateEnabled = $scope.timeEnabled = true;

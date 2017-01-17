@@ -20,12 +20,12 @@
     </div>
   </div>
 
-  <div class="row calendar weekdays">
+  <div class="row calendar weekdays" ng-if="!onlyMonth">
     <div class="col" ng-repeat="weekday in weekdays">
       <div class="weekday">{{i18n.weekdays[weekday]}}</div>
     </div>
   </div>
-  <div ng-if-end class="row calendar days" ng-repeat="y in rows">
+  <div ng-if-end class="row calendar days" ng-if="!onlyMonth" ng-repeat="y in rows">
     <div class="col" ng-repeat="x in cols">
       <div ng-show="(cellDay = y * 7 + x - firstDay) > 0 && cellDay <= daysInMonth"
          ng-click="changeDay(cellDay)" class="day"
