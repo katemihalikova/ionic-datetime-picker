@@ -9,11 +9,13 @@ angular.module("ion-datetime-picker", ["ionic"])
         subTitle: "=?",
         buttonOk: "=?",
         buttonCancel: "=?",
+        buttonClear: "=?",
         monthStep: "=?",
         hourStep: "=?",
         minuteStep: "=?",
         secondStep: "=?",
-        onlyValid: "=?"
+        onlyValid: "=?",
+        allowClear: "=?"
       },
       controller: function($scope, $ionicPopup, $ionicPickerI18n, $timeout) {
         $scope.i18n = $ionicPickerI18n;
@@ -39,29 +41,38 @@ angular.module("ion-datetime-picker", ["ionic"])
         };
 
         $scope.showPopup = function() {
+          var buttons = [
+            {
+              text: $scope.buttonOk || $scope.i18n.ok,
+              type: $scope.i18n.okClass,
+              onTap: function() {
+                $scope.commit();
+              }
+            }, {
+              text: $scope.buttonCancel || $scope.i18n.cancel,
+              type: $scope.i18n.cancelClass,
+              onTap: function() {
+                $timeout(function() {
+                  $scope.processModel();
+                }, 200);
+              }
+            }];
+          if ($scope.allowClear) {
+            buttons.splice(1, 0, {
+              text: $scope.buttonClear || $scope.i18n.clear,
+              type: $scope.i18n.cancelClass,
+              onTap: function() {
+                $scope.clear();
+              }
+            });
+          }
           $ionicPopup.show({
             templateUrl: "lib/ion-datetime-picker/src/picker-popup.html",
             title: $scope.title || ("Pick " + ($scope.dateEnabled ? "a date" : "") + ($scope.dateEnabled && $scope.timeEnabled ? " and " : "") + ($scope.timeEnabled ? "a time" : "")),
             subTitle: $scope.subTitle || "",
             scope: $scope,
             cssClass: 'ion-datetime-picker-popup',
-            buttons: [
-              {
-                text: $scope.buttonOk || $scope.i18n.ok,
-                type: $scope.i18n.okClass,
-                onTap: function() {
-                  $scope.commit();
-                }
-              }, {
-                text: $scope.buttonCancel || $scope.i18n.cancel,
-                type: $scope.i18n.cancelClass,
-                onTap: function() {
-                  $timeout(function() {
-                    $scope.processModel();
-                  }, 200);
-                }
-              }
-            ]
+            buttons: buttons
           });
         };
 
@@ -339,6 +350,11 @@ angular.module("ion-datetime-picker", ["ionic"])
         $scope.commit = function() {
           $scope.modelDate = new Date($scope.year, $scope.month, $scope.day, $scope.hour, $scope.minute, $scope.second);
           ngModelCtrl.$setViewValue($scope.modelDate);
+        };
+
+        $scope.clear = function() {
+          $scope.modelDate = new Date();
+          ngModelCtrl.$setViewValue(undefined);
         };
 
         $element.on("click", $scope.showPopup);
