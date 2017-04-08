@@ -147,7 +147,7 @@ Array of months names. `0` is January. If `moment` is installed, I try to get lo
 
 Default, global labels of the buttons at the bottom of the picker.
 
-### `okClass` and `cancelClass` keys
+### `okClass`, `cancelClass` and `arrowButtonClass` keys
 
 Custom space-delimited classes applied to the buttons at the bottom of the picker.
 
@@ -160,6 +160,7 @@ angular.module("myApp")
     $ionicPickerI18n.cancel = "Cancelar";
     $ionicPickerI18n.okClass = "button-positive";
     $ionicPickerI18n.cancelClass = "button-stable";
+    $ionicPickerI18n.arrowButtonClass = "button-stable";
   });
 ```
 
