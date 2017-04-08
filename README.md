@@ -160,7 +160,7 @@ angular.module("myApp")
     $ionicPickerI18n.cancel = "Cancelar";
     $ionicPickerI18n.okClass = "button-positive";
     $ionicPickerI18n.cancelClass = "button-stable";
-    $ionicPickerI18n.arrowButtonClass = "button-stable";
+    $ionicPickerI18n.arrowButtonClass = "button-positive";
   });
 ```
 
