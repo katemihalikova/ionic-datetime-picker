@@ -15,7 +15,7 @@ angular.module("ion-datetime-picker", ["ionic"])
         secondStep: "=?",
         onlyValid: "=?"
       },
-      controller: function($scope, $ionicPopup, $ionicPickerI18n, $timeout) {
+      controller: function($scope, $ionicPopup, $ionicPickerI18n, $timeout, $window) {
         $scope.i18n = $ionicPickerI18n;
         $scope.bind = {};
 
@@ -71,8 +71,14 @@ angular.module("ion-datetime-picker", ["ionic"])
           }
         };
 
+        $scope.isMoment = function(){
+          return $window.moment ? $scope.modelDate instanceof moment : false;
+        };
+
         $scope.processModel = function() {
-          var date = $scope.modelDate instanceof Date ? $scope.modelDate : new Date();
+          var date = $scope.isMoment() 
+              ? $scope.modelDate.toDate() 
+              : ($scope.modelDate instanceof Date ? $scope.modelDate : new Date());
           $scope.year = $scope.dateEnabled ? date.getFullYear() : 0;
           $scope.month = $scope.dateEnabled ? date.getMonth() : 0;
           $scope.day = $scope.dateEnabled ? date.getDate() : 0;
@@ -337,7 +343,9 @@ angular.module("ion-datetime-picker", ["ionic"])
         };
 
         $scope.commit = function() {
-          $scope.modelDate = new Date($scope.year, $scope.month, $scope.day, $scope.hour, $scope.minute, $scope.second);
+          $scope.modelDate = $scope.isMoment() 
+              ? moment([$scope.year, $scope.month, $scope.day, $scope.hour, $scope.minute, $scope.second])
+              : new Date($scope.year, $scope.month, $scope.day, $scope.hour, $scope.minute, $scope.second);
           ngModelCtrl.$setViewValue($scope.modelDate);
         };
 
