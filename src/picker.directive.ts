@@ -76,7 +76,7 @@ export class DatetimePickerDirective {
     });
 
     this.input._fireFocus();
-    picker.present(pickerOptions);
+    picker.present();
     picker.onDidDismiss(() => {
       this.input._fireBlur();
     });
