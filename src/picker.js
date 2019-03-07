@@ -9,6 +9,7 @@ angular.module("ion-datetime-picker", ["ionic"])
         subTitle: "=?",
         buttonOk: "=?",
         buttonCancel: "=?",
+        buttonClear: "=?",
         monthStep: "=?",
         hourStep: "=?",
         minuteStep: "=?",
@@ -41,7 +42,7 @@ angular.module("ion-datetime-picker", ["ionic"])
         $scope.showPopup = function() {
           $ionicPopup.show({
             templateUrl: "lib/ion-datetime-picker/src/picker-popup.html",
-            title: $scope.title || ("Pick " + ($scope.dateEnabled ? "a date" : "") + ($scope.dateEnabled && $scope.timeEnabled ? " and " : "") + ($scope.timeEnabled ? "a time" : "")),
+            title: $scope.title || ($scope.i18n.pick + ($scope.dateEnabled ? $scope.i18n.date : "") + ($scope.dateEnabled && $scope.timeEnabled ? $scope.i18n.and : "") + ($scope.timeEnabled ? $scope.i18n.time : "")),
             subTitle: $scope.subTitle || "",
             scope: $scope,
             cssClass: 'ion-datetime-picker-popup',
@@ -51,6 +52,14 @@ angular.module("ion-datetime-picker", ["ionic"])
                 type: $scope.i18n.okClass,
                 onTap: function() {
                   $scope.commit();
+                }
+              }, {
+                text: $scope.buttonClear || $scope.i18n.clear,
+                type: $scope.i18n.clearClass,
+                onTap: function() {
+                  $timeout(function() {
+                    $scope.clear();
+                  }, 200);
                 }
               }, {
                 text: $scope.buttonCancel || $scope.i18n.cancel,
@@ -225,61 +234,61 @@ angular.module("ion-datetime-picker", ["ionic"])
               }
 
             } else
-            if (currentRule.before){
+              if (currentRule.before){
 
-              var beforeDate = createDate(currentRule.before);
+                var beforeDate = createDate(currentRule.before);
 
-              if (currentRule.inclusive) {
-                isValid = currentDate <= beforeDate;
-                if (!isValid && computeNextValidDate) setNextValidDate(beforeDate, 0);
-              } else {
-                isValid = currentDate < beforeDate;
-                if (!isValid && computeNextValidDate) setNextValidDate(beforeDate, -1);
-              }
-
-            } else
-            if (currentRule.between){
-
-              var initialDate = createDate(currentRule.between.initial);
-              var finalDate = createDate(currentRule.between.final);
-
-              if (currentRule.inclusive) {
-                isValid = currentDate >= initialDate && currentDate <= finalDate;
-                if (!isValid && computeNextValidDate) {
-                  if (currentDate < initialDate) setNextValidDate(initialDate, 0);
-                  if (currentDate > finalDate) setNextValidDate(finalDate, 0);
+                if (currentRule.inclusive) {
+                  isValid = currentDate <= beforeDate;
+                  if (!isValid && computeNextValidDate) setNextValidDate(beforeDate, 0);
+                } else {
+                  isValid = currentDate < beforeDate;
+                  if (!isValid && computeNextValidDate) setNextValidDate(beforeDate, -1);
                 }
-              } else {
-                isValid = currentDate > initialDate && currentDate < finalDate;
-                if (!isValid && computeNextValidDate) {
-                  if (currentDate <= initialDate) setNextValidDate(initialDate, 1);
-                  if (currentDate >= finalDate) setNextValidDate(finalDate, -1);
-                }
-              }
 
-            } else
-            if (currentRule.outside){
+              } else
+                if (currentRule.between){
 
-              var initialDate = createDate(currentRule.outside.initial);
-              var finalDate = createDate(currentRule.outside.final);
+                  var initialDate = createDate(currentRule.between.initial);
+                  var finalDate = createDate(currentRule.between.final);
 
-              if (currentRule.inclusive) {
-                isValid = currentDate <= initialDate || currentDate >= finalDate;
-                if (!isValid && computeNextValidDate) {
-                  var lastValidDate = lastDateSet.getDateWithoutTime();
-                  if (lastValidDate <= initialDate) setNextValidDate(finalDate, 0);
-                  if (lastValidDate >= finalDate) setNextValidDate(initialDate, 0);
-                }
-              } else {
-                isValid = currentDate < initialDate || currentDate > finalDate;
-                if (!isValid && computeNextValidDate) {
-                  var lastValidDate = lastDateSet.getDateWithoutTime();
-                  if (lastValidDate < initialDate) setNextValidDate(finalDate, 1);
-                  if (lastValidDate > finalDate) setNextValidDate(initialDate, -1);
-                }
-              }
+                  if (currentRule.inclusive) {
+                    isValid = currentDate >= initialDate && currentDate <= finalDate;
+                    if (!isValid && computeNextValidDate) {
+                      if (currentDate < initialDate) setNextValidDate(initialDate, 0);
+                      if (currentDate > finalDate) setNextValidDate(finalDate, 0);
+                    }
+                  } else {
+                    isValid = currentDate > initialDate && currentDate < finalDate;
+                    if (!isValid && computeNextValidDate) {
+                      if (currentDate <= initialDate) setNextValidDate(initialDate, 1);
+                      if (currentDate >= finalDate) setNextValidDate(finalDate, -1);
+                    }
+                  }
 
-            }
+                } else
+                  if (currentRule.outside){
+
+                    var initialDate = createDate(currentRule.outside.initial);
+                    var finalDate = createDate(currentRule.outside.final);
+
+                    if (currentRule.inclusive) {
+                      isValid = currentDate <= initialDate || currentDate >= finalDate;
+                      if (!isValid && computeNextValidDate) {
+                        var lastValidDate = lastDateSet.getDateWithoutTime();
+                        if (lastValidDate <= initialDate) setNextValidDate(finalDate, 0);
+                        if (lastValidDate >= finalDate) setNextValidDate(initialDate, 0);
+                      }
+                    } else {
+                      isValid = currentDate < initialDate || currentDate > finalDate;
+                      if (!isValid && computeNextValidDate) {
+                        var lastValidDate = lastDateSet.getDateWithoutTime();
+                        if (lastValidDate < initialDate) setNextValidDate(finalDate, 1);
+                        if (lastValidDate > finalDate) setNextValidDate(initialDate, -1);
+                      }
+                    }
+
+                  }
 
             if (!isValid) {
               break;
@@ -338,6 +347,11 @@ angular.module("ion-datetime-picker", ["ionic"])
 
         $scope.commit = function() {
           $scope.modelDate = new Date($scope.year, $scope.month, $scope.day, $scope.hour, $scope.minute, $scope.second);
+          ngModelCtrl.$setViewValue($scope.modelDate);
+        };
+
+        $scope.clear = function() {
+          $scope.modelDate = null;
           ngModelCtrl.$setViewValue($scope.modelDate);
         };
 
